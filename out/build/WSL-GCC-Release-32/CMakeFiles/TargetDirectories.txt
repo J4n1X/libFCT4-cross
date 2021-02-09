@@ -1,0 +1,5 @@
+/mnt/d/Users/janic/source/repos/libFCT-cpp-cross/out/build/WSL-GCC-Release-32/CMakeFiles/rebuild_cache.dir
+/mnt/d/Users/janic/source/repos/libFCT-cpp-cross/out/build/WSL-GCC-Release-32/CMakeFiles/edit_cache.dir
+/mnt/d/Users/janic/source/repos/libFCT-cpp-cross/out/build/WSL-GCC-Release-32/libFCT-cross/CMakeFiles/rebuild_cache.dir
+/mnt/d/Users/janic/source/repos/libFCT-cpp-cross/out/build/WSL-GCC-Release-32/libFCT-cross/CMakeFiles/libFCT-cross.dir
+/mnt/d/Users/janic/source/repos/libFCT-cpp-cross/out/build/WSL-GCC-Release-32/libFCT-cross/CMakeFiles/edit_cache.dir

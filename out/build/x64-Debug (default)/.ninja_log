@@ -1,0 +1,24 @@
+# ninja log v5
+4	980	634574906	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FileParser.cpp.obj	ca930b72123c660c
+1	1007	634574906	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FctArchive.cpp.obj	d880b4ab06079b07
+5	1008	634574906	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FSoperations.cpp.obj	1b7a0327a6c077dc
+7	1030	634574906	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/libFCT-cpp-cross.cpp.obj	d4ae172a9e72334c
+1	753	634575053	libFCT-cpp-cross/libFCT-cpp-cross.exe	68a229f8d3e1f9c8
+0	9	0	clean	d2038a380983c93f
+4	915	634575199	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FileParser.cpp.obj	ca930b72123c660c
+6	938	634575199	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/libFCT-cpp-cross.cpp.obj	d4ae172a9e72334c
+5	942	634575199	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FSoperations.cpp.obj	1b7a0327a6c077dc
+1	943	634575199	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FctArchive.cpp.obj	d880b4ab06079b07
+943	1238	634575199	libFCT-cpp-cross/libFCT-cpp-cross.exe	68a229f8d3e1f9c8
+1	1106	634576489	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/libFCT-cpp-cross.cpp.obj	d4ae172a9e72334c
+1106	1792	634576490	libFCT-cpp-cross/libFCT-cpp-cross.exe	68a229f8d3e1f9c8
+3	956	634580897	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FileParser.cpp.obj	ca930b72123c660c
+1	973	634580897	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FSoperations.cpp.obj	1b7a0327a6c077dc
+5	979	634580897	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/FctArchive.cpp.obj	d880b4ab06079b07
+4	998	634580897	libFCT-cpp-cross/CMakeFiles/libFCT-cpp-cross.dir/libFCT-cpp-cross.cpp.obj	d4ae172a9e72334c
+999	1571	634580898	libFCT-cpp-cross/libFCT-cpp-cross.exe	68a229f8d3e1f9c8
+3	957	634582126	libFCT-cross/CMakeFiles/libFCT-cross.dir/FileParser.cpp.obj	e71db9c2cb4a8c88
+4	968	634582126	libFCT-cross/CMakeFiles/libFCT-cross.dir/FSoperations.cpp.obj	f92875b7dde5f96d
+0	981	634582126	libFCT-cross/CMakeFiles/libFCT-cross.dir/libFCT-cross.cpp.obj	da67446ec7737b21
+2	997	634582126	libFCT-cross/CMakeFiles/libFCT-cross.dir/FctArchive.cpp.obj	133a8e5d0b841766
+997	1534	634582127	libFCT-cross/libFCT-cross.exe	3184444dd7cb303c

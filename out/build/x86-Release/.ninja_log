@@ -1,0 +1,6 @@
+# ninja log v5
+4	879	634582145	libFCT-cross/CMakeFiles/libFCT-cross.dir/FileParser.cpp.obj	7a0d1bf0bc2c10a8
+2	938	634582145	libFCT-cross/CMakeFiles/libFCT-cross.dir/FSoperations.cpp.obj	c64290f6c940f731
+0	992	634582145	libFCT-cross/CMakeFiles/libFCT-cross.dir/FctArchive.cpp.obj	b23e23ea25c1dcae
+5	1108	634582145	libFCT-cross/CMakeFiles/libFCT-cross.dir/libFCT-cross.cpp.obj	1fababfc5e0878b0
+1108	1559	634582146	libFCT-cross/libFCT-cross.exe	400800513454988a
