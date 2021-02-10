@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstring>
+#include <fstream>
 
 #include "FctArchive.h"
 #include "FSoperations.h"
@@ -66,8 +67,7 @@ namespace FCT {
 		}
 
 		FILE* inFile;
-		FCT::FS::fileOpen(&inFile, file.RawFilePath.c_str(), "rb");
-		if (inFile == NULL)
+		if (FCT::FS::fileOpen(&inFile, file.RawFilePath.c_str(), "rb"))
 			return errno;
 
 		// write header first
@@ -86,6 +86,7 @@ namespace FCT {
 			fwrite(buffer, 1, ChunkSize, ArchiveFile);
 		}
 
+		fclose(inFile);
 		delete[] buffer;
 		FileIndexStale = true;
 

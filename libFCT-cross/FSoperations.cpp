@@ -41,7 +41,7 @@ namespace FCT {
 		{
 			std::vector<std::filesystem::path> stringVector;
 			for (std::filesystem::recursive_directory_iterator i(folderPath), end; i != end; ++i) {
-				if (!std::filesystem::is_directory(i->path())) {
+				if (std::filesystem::is_regular_file(i->path())) {
 					stringVector.push_back(i->path());
 				}
 			}

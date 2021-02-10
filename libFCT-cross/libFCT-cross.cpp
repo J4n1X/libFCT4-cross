@@ -21,6 +21,7 @@ int createArchive(int argc, char** argv) {
 		if (std::filesystem::is_directory(argv[i])) {
 			std::vector<std::filesystem::path> files = FCT::FS::expandDirectory(argv[i]);
 
+			int temp;
 			for (auto& it : files) {
 				FCT::FileParser file;
 				try {
@@ -30,8 +31,9 @@ int createArchive(int argc, char** argv) {
 					std::cerr << msg << std::endl;
 					continue;
 				}
-				std::cout << std::endl << file << std::endl;
-				archive.addFile(file);
+				std::cout << std::endl << file;
+				std::cout << (!(archive.addFile(file)) ? ": Wrote file successfully\n" : ": Failed to write file\n");
+
 			}
 		}
 		else if (std::filesystem::is_regular_file(argv[i])) {

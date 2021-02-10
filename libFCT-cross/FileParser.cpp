@@ -25,7 +25,7 @@ namespace FCT {
 	// parse from file
 	FileParser::FileParser(std::filesystem::path filePath, std::filesystem::path rootDir, uint16_t chunkSize) {
 		// TODO: FILE NAME FORMATTING, WE JUST INSERT THE PATH FOR NOW
-		RawFilePath = filePath.string();
+		RawFilePath = filePath;
 		FormattedFilePath = FCT::FS::FormatPath(rootDir, filePath);
 
 		// get file size (TODO: multi-platform)

@@ -23,7 +23,7 @@ namespace FCT {
 		int64_t FileSize;
 		uint32_t ChunkCount;
 		uint16_t LastChunkContentSize;
-		std::string RawFilePath;
+		std::filesystem::path RawFilePath;
 		std::string FormattedFilePath;
 		std::vector<uint8_t> Header;
 

@@ -21,3 +21,6 @@
 3	935	634582134	libFCT-cross/CMakeFiles/libFCT-cross.dir/FctArchive.cpp.obj	85f15ed01522e4a
 1	1124	634582134	libFCT-cross/CMakeFiles/libFCT-cross.dir/libFCT-cross.cpp.obj	237c73b48a81742c
 1124	1588	634582134	libFCT-cross/libFCT-cross.exe	e920995d2c9089b6
+1	1123	634659258	libFCT-cross/CMakeFiles/libFCT-cross.dir/FSoperations.cpp.obj	667213fdeb63d463
+7	1221	634659258	libFCT-cross/CMakeFiles/libFCT-cross.dir/libFCT-cross.cpp.obj	237c73b48a81742c
+1221	2153	634659259	libFCT-cross/libFCT-cross.exe	e920995d2c9089b6
