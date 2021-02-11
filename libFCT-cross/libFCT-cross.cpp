@@ -17,9 +17,20 @@ int createArchive(int argc, char** argv) {
 	std::cout << "-----------" << std::endl;
 	for (int i = 4; i < argc; i++) {
 		std::string argString(argv[i]);
+	
+		// Windows does some weird stuff with the trailing backslash, interpreting it as an escape sequence
+#if defined _WIN32
+		if (argString.back() == '\"')
+			argString.pop_back();
+#elif defined __linux__
+		if (argString.back() == FCT::PathDelimiter) // remove trailing slash
+			argString.pop_back();
+#endif
+		std::cout << argString << std::endl;
 		std::filesystem::path rootDir = std::filesystem::path(argString).filename();
-		if (std::filesystem::is_directory(argv[i])) {
-			std::vector<std::filesystem::path> files = FCT::FS::expandDirectory(argv[i]);
+		
+		if (std::filesystem::is_directory(argString)) {
+			std::vector<std::filesystem::path> files = FCT::FS::expandDirectory(argString);
 
 			int temp;
 			for (auto& it : files) {

@@ -67,7 +67,7 @@ namespace FCT {
 		}
 
 		FILE* inFile;
-		if (FCT::FS::fileOpen(&inFile, file.RawFilePath.c_str(), "rb"))
+		if (FCT::FS::fileOpen(&inFile, file.RawFilePath.string().c_str(), "rb"))
 			return errno;
 
 		// write header first
