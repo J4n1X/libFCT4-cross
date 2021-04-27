@@ -3,7 +3,7 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("libFCT-cross")
+project ("FCT-cross")
 
 # Include sub-projects.
-add_subdirectory ("libFCT-cross")
+add_subdirectory ("FCT-cross")

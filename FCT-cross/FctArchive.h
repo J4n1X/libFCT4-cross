@@ -39,7 +39,7 @@ namespace FCT {
 		int removeFiles(std::vector<uint32_t> indices);
 
 		int extractFiles(std::vector<uint32_t> indices);
-		std::vector<int> extractAll(std::string outputPath);
+		std::vector<int> extractAll(std::string outputPath, bool verbose);
 
 		void generateFileIndex();
 

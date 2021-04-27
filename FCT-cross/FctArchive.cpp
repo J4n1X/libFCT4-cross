@@ -186,7 +186,7 @@ namespace FCT {
 		return 0;
 	}
 
-	std::vector<int> FctArchive::extractAll(std::string outputPath) {
+	std::vector<int> FctArchive::extractAll(std::string outputPath, bool verbose) {
 		fseek(ArchiveFile, ArchiveHeaderSize, SEEK_SET);
 		std::vector<int> returnVals;
 		FILE* outFile;
@@ -196,7 +196,10 @@ namespace FCT {
 		if (FileIndexStale)
 			generateFileIndex();
 		for (auto& file : FileIndex) {
-			std::cout << file << std::endl;
+			if (verbose)
+				std::cout << FCT::printFileVerbose(file) << std::endl;
+			else
+				std::cout << file << std::endl;
 			std::filesystem::path extractPath = outputPath;
 			extractPath.append(file.FormattedFilePath);
 			FCT::FS::createNewDirectory(extractPath); // creates directory if it doesn't exist

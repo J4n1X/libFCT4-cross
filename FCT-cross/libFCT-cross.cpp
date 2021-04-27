@@ -6,7 +6,7 @@
 #include "libFCT.h"
 
 // TODO: rewrite
-int createArchive(int argc, char** argv) {
+int createArchive(int argc, char** argv, bool verbose) {
 	if (argc < 5) {
 		std::cout << "Not enough arguments entered! Required: 3 or more." << std::endl;
 		return errno;
@@ -57,7 +57,12 @@ int createArchive(int argc, char** argv) {
 				std::cout << msg << std::endl;
 				continue;
 			}
-			std::cout << file << std::endl;
+
+			if (verbose)
+				std::cout << FCT::printFileVerbose(file) << std::endl;
+			else
+				std::cout << file << std::endl;
+
 			archive.addFile(file);
 		}
 		else {
@@ -68,7 +73,7 @@ int createArchive(int argc, char** argv) {
 	return 0;
 }
 
-int appendArchive(int argc, char** argv) {
+int appendArchive(int argc, char** argv, bool verbose) {
 	if (argc < 4) {
 		std::cout << "Not enough arguments entered! Required: 2 or more." << std::endl;
 		return errno;
@@ -105,7 +110,12 @@ int appendArchive(int argc, char** argv) {
 			std::cerr << msg << std::endl;
 			continue;
 		}
-		std::cout << file << std::endl;
+
+		if (verbose)
+			std::cout << FCT::printFileVerbose(file) << std::endl;
+		else
+			std::cout << file << std::endl;
+
 		retVals.push_back(archive.addFile(file));
 	}
 
@@ -115,7 +125,7 @@ int appendArchive(int argc, char** argv) {
 	return ret;
 }
 
-int listArchive(int argc, char** argv) {
+int listArchive(int argc, char** argv, bool verbose) {
 	if (argc < 3) {
 		std::cout << "Not enough arguments entered! Required: 1 or more" << std::endl;
 		return errno;
@@ -130,14 +140,16 @@ int listArchive(int argc, char** argv) {
 	}
 	else {
 		for (uint32_t i = 0; i < archive.getFileIndex().size(); i++) {
-			std::cout << "File Nr. " << i + 1 << std::endl;
-			std::cout << archive.getFileIndex()[i] << std::endl;
+			if (verbose)
+				std::cout << FCT::printFileVerbose(archive.getFileIndex()[i]) << std::endl;
+			else
+				std::cout << archive.getFileIndex()[i] << std::endl;
 		}
 	}
 	return 0;
 }
 
-int extractArchive(int argc, char** argv) {
+int extractArchive(int argc, char** argv, bool verbose) {
 	if (argc < 4) {
 		std::cout << "Not enough arguments entered! Required: 2 or more." << std::endl;
 		return errno;
@@ -147,7 +159,7 @@ int extractArchive(int argc, char** argv) {
 	FCT::FctArchive archive(argv[2]);
 	if (argc == 4) {
 		int ret = 0;
-		for (auto& iter : archive.extractAll(argv[3])) {
+		for (auto& iter : archive.extractAll(argv[3], verbose)) {
 			ret += iter; // we'll return the amount of failed files
 			if (iter == 1)
 				std::cerr << "File Nr. " << iter << " failed to extract" << std::endl;
@@ -171,7 +183,7 @@ int extractArchive(int argc, char** argv) {
 	}
 }
 
-int removeFromArchive(int argc, char** argv) {
+int removeFromArchive(int argc, char** argv, bool verbose) {
 	if (argc < 4) {
 		std::cout << "Not enough arguments entered! Required: 2 or more." << std::endl;
 		return errno;
@@ -185,7 +197,10 @@ int removeFromArchive(int argc, char** argv) {
 	std::vector<uint32_t> indices;
 	for (int i = 3; i < argc; i++) {
 		indices.push_back(std::stoi(std::string(argv[i])));
-		std::cout << archive.getFileIndex()[indices.back()] << std::endl;
+		if (verbose)
+			std::cout << FCT::printFileVerbose(archive.getFileIndex()[indices.back()]) << std::endl;
+		else
+			std::cout << archive.getFileIndex()[indices.back()] << std::endl;
 	}
 
 
@@ -195,22 +210,24 @@ int removeFromArchive(int argc, char** argv) {
 int main(int argc, char** argv) {
 	std::string programName = std::filesystem::path(argv[0]).filename().string();
 	int retVal = 0;
+
 	if (argc > 1) {		// TODO: Better error handling
+		bool verbose = (argv[1][1] == 'v') ? true : false;
 		switch (argv[1][0]) {
 		case 'a':
-			retVal = appendArchive(argc, argv);
+			retVal = appendArchive(argc, argv, verbose);
 			break;
 		case 'c':
-			retVal = createArchive(argc, argv);
+			retVal = createArchive(argc, argv, verbose);
 			break;
 		case 'e':
-			retVal = extractArchive(argc, argv); // TODO: Better extraction of specific files
+			retVal = extractArchive(argc, argv, verbose); // TODO: Better extraction of specific files
 			break;
 		case 'l':
-			retVal = listArchive(argc, argv);
+			retVal = listArchive(argc, argv, verbose);
 			break;
 		case 'r':
-			retVal = removeFromArchive(argc, argv);
+			retVal = removeFromArchive(argc, argv, verbose);
 			break;
 		case 'h':
 		case '?':
@@ -219,8 +236,9 @@ int main(int argc, char** argv) {
 			std::cout << "a - Append to archive. Usage: " << programName << " a <path to archive> <paths to files or directories>" << std::endl;
 			std::cout << "c - Create archive. Usage: " << programName << " c <chunk size (max: " << FCT::MaxChunkSize << ")> <path to new archive> <paths to files or directories>" << std::endl;
 			std::cout << "e - Extract from archive. Usage: " << programName << " e <path to archive> <output directory> <file indices (if none, all is extracted)>" << std::endl;
-			std::cout << "h - Show help. Usage " << programName << " h" << std::endl;
+			std::cout << "h - Show help. Usage: " << programName << " h" << std::endl;
 			std::cout << "l - List archive contents Usage: " << programName << " l <path to archive> <file indices (if none, all is shown)>" << std::endl;
+			std::cout << "v - Can be added to all file modes for verbose output" << std::endl;
 			break;
 		default:
 			std::cout << "Invalid mode selector: " << argv[1][0] << std::endl;

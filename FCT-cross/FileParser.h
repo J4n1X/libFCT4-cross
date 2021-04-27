@@ -34,4 +34,5 @@ namespace FCT {
 
 		friend std::ostream& operator<<(std::ostream& os, const FileParser &file); // we want to define this in the cpp file
 	};
+	std::string printFileVerbose(FileParser file);
 }

@@ -98,11 +98,15 @@ namespace FCT {
 	}
 #pragma endregion 
 
-	std::ostream& operator<<(std::ostream& os, const FileParser &file){
-		os << "Filename: " << file.FormattedFilePath << std::endl;
-		os << "Filesize: " << file.FileSize << std::endl;
-		os << "Chunk count: " << file.ChunkCount << std::endl;
-		os << "Last Chunk remainder: " << file.LastChunkContentSize << std::endl;
+
+	std::ostream& operator<<(std::ostream& os, const FileParser& file) {
+		os << file.FormattedFilePath << " " << file.FileSize;
 		return os;
+	}
+	std::string printFileVerbose(FileParser file){
+		return "Filename: " + file.FormattedFilePath + '\n'
+			+  "Filesize: " + std::to_string(file.FileSize) + '\n'
+			+  "Chunk count: " + std::to_string(file.ChunkCount) + '\n'
+			+  "Last Chunk remainder: " + std::to_string(file.LastChunkContentSize) + '\n';
 	} 
 }
