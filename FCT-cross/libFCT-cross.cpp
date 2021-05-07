@@ -3,7 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "libFCT.h"
+#include <filesystem>
+#include "libFCT/libFCT.h"
 
 // TODO: rewrite
 int createArchive(int argc, char** argv, bool verbose) {
