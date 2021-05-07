@@ -7,8 +7,10 @@
 #include "libFCT/libFCT.h"
 
 // TODO: rewrite
-int createArchive(int argc, char** argv, bool verbose) {
-	if (argc < 5) {
+int createArchive(int argc, char **argv, bool verbose)
+{
+	if (argc < 5)
+	{
 		std::cout << "Not enough arguments entered! Required: 3 or more." << std::endl;
 		return errno;
 	}
@@ -16,9 +18,10 @@ int createArchive(int argc, char** argv, bool verbose) {
 	FCT::FctArchive archive(argv[3], std::stoi(std::string(argv[2])));
 	std::cout << "Create Mode" << std::endl;
 	std::cout << "-----------" << std::endl;
-	for (int i = 4; i < argc; i++) {
+	for (int i = 4; i < argc; i++)
+	{
 		std::string argString(argv[i]);
-	
+
 		// Windows does some weird stuff with the trailing backslash, interpreting it as an escape sequence
 #if defined _WIN32
 		if (argString.back() == '\"')
@@ -27,34 +30,43 @@ int createArchive(int argc, char** argv, bool verbose) {
 		if (argString.back() == FCT::PathDelimiter) // remove trailing slash
 			argString.pop_back();
 #endif
-		std::cout << argString << std::endl;
 		std::filesystem::path rootDir = std::filesystem::path(argString).filename();
-		
-		if (std::filesystem::is_directory(argString)) {
+
+		if (std::filesystem::is_directory(argString))
+		{
 			std::vector<std::filesystem::path> files = FCT::FS::expandDirectory(argString);
 
 			int temp;
-			for (auto& it : files) {
+			for (auto &it : files)
+			{
 				FCT::FileParser file;
-				try {
+				try
+				{
 					file = FCT::FileParser(it, rootDir, archive.getChunkSize());
 				}
-				catch (const char* msg) {
+				catch (const char *msg)
+				{
 					std::cerr << msg << std::endl;
 					continue;
 				}
-				std::cout << std::endl << file;
-				std::cout << (!(archive.addFile(file)) ? ": Wrote file successfully\n" : ": Failed to write file\n");
 
+				if (verbose)
+					std::cout << FCT::printFileVerbose(file) << std::endl;
+				else
+					std::cout << file << std::endl;
+
+				archive.addFile(file);
 			}
 		}
-		else if (std::filesystem::is_regular_file(argv[i])) {
-			std::cout << std::endl;
+		else if (std::filesystem::is_regular_file(argv[i]))
+		{
 			FCT::FileParser file;
-			try {
+			try
+			{
 				file = FCT::FileParser(argv[i], rootDir, archive.getChunkSize());
 			}
-			catch (const char* msg) {
+			catch (const char *msg)
+			{
 				std::cout << msg << std::endl;
 				continue;
 			}
@@ -66,7 +78,8 @@ int createArchive(int argc, char** argv, bool verbose) {
 
 			archive.addFile(file);
 		}
-		else {
+		else
+		{
 			return errno;
 		}
 	}
@@ -74,8 +87,10 @@ int createArchive(int argc, char** argv, bool verbose) {
 	return 0;
 }
 
-int appendArchive(int argc, char** argv, bool verbose) {
-	if (argc < 4) {
+int appendArchive(int argc, char **argv, bool verbose)
+{
+	if (argc < 4)
+	{
 		std::cout << "Not enough arguments entered! Required: 2 or more." << std::endl;
 		return errno;
 	}
@@ -87,27 +102,34 @@ int appendArchive(int argc, char** argv, bool verbose) {
 	std::vector<std::filesystem::path> files;
 	std::vector<int> retVals;
 
-	for (int i = 3; i < argc; i++) {
-		if (std::filesystem::exists(argv[i])) {
-			if (std::filesystem::is_regular_file(argv[i])) {
+	for (int i = 3; i < argc; i++)
+	{
+		if (std::filesystem::exists(argv[i]))
+		{
+			if (std::filesystem::is_regular_file(argv[i]))
+			{
 				files.push_back(std::filesystem::path(argv[i]));
 			}
-			else if (std::filesystem::is_directory(argv[i])) {
+			else if (std::filesystem::is_directory(argv[i]))
+			{
 				std::vector<std::filesystem::path> directoryContent(FCT::FS::expandDirectory(argv[i]));
 				files.insert(files.end(), directoryContent.begin(), directoryContent.end());
 			}
 		}
 	}
 
-	for (auto& it : files) {
+	for (auto &it : files)
+	{
 		FCT::FileParser file;
 		// if we're appending files, they are placed into the root for now, so
 		// TODO: Better directory handling
 		rootDir = std::filesystem::path(it).filename().string();
-		try {
+		try
+		{
 			file = FCT::FileParser(it, rootDir, archive.getChunkSize());
 		}
-		catch (const char* msg) {
+		catch (const char *msg)
+		{
 			std::cerr << msg << std::endl;
 			continue;
 		}
@@ -121,26 +143,32 @@ int appendArchive(int argc, char** argv, bool verbose) {
 	}
 
 	int ret = 0;
-	for (auto& it : retVals)
+	for (auto &it : retVals)
 		ret |= it;
 	return ret;
 }
 
-int listArchive(int argc, char** argv, bool verbose) {
-	if (argc < 3) {
+int listArchive(int argc, char **argv, bool verbose)
+{
+	if (argc < 3)
+	{
 		std::cout << "Not enough arguments entered! Required: 1 or more" << std::endl;
 		return errno;
 	}
 	std::cout << "List Mode" << std::endl;
 	std::cout << "---------" << std::endl;
 	FCT::FctArchive archive(argv[2]);
-	if (argc > 3) {
+	if (argc > 3)
+	{
 		for (int i = 3; i < argc; i++)
-			std::cout << "File: " << argv[i] << std::endl << archive.getFileIndex()[std::stoi(argv[i])] << std::endl;
+			std::cout << "File: " << argv[i] << std::endl
+					  << archive.getFileIndex()[std::stoi(argv[i])] << std::endl;
 		std::cout << "Archive file count: " << archive.getFileIndex().size() << std::endl;
 	}
-	else {
-		for (uint32_t i = 0; i < archive.getFileIndex().size(); i++) {
+	else
+	{
+		for (uint32_t i = 0; i < archive.getFileIndex().size(); i++)
+		{
 			if (verbose)
 				std::cout << FCT::printFileVerbose(archive.getFileIndex()[i]) << std::endl;
 			else
@@ -150,17 +178,21 @@ int listArchive(int argc, char** argv, bool verbose) {
 	return 0;
 }
 
-int extractArchive(int argc, char** argv, bool verbose) {
-	if (argc < 4) {
+int extractArchive(int argc, char **argv, bool verbose)
+{
+	if (argc < 4)
+	{
 		std::cout << "Not enough arguments entered! Required: 2 or more." << std::endl;
 		return errno;
 	}
 	std::cout << "Extract Mode" << std::endl;
 	std::cout << "------------" << std::endl;
 	FCT::FctArchive archive(argv[2]);
-	if (argc == 4) {
+	if (argc == 4)
+	{
 		int ret = 0;
-		for (auto& iter : archive.extractAll(argv[3], verbose)) {
+		for (auto &iter : archive.extractAll(argv[3], verbose))
+		{
 			ret += iter; // we'll return the amount of failed files
 			if (iter == 1)
 				std::cerr << "File Nr. " << iter << " failed to extract" << std::endl;
@@ -168,12 +200,15 @@ int extractArchive(int argc, char** argv, bool verbose) {
 
 		return ret;
 	}
-	else { // extract single files
+	else
+	{					   // extract single files
 		int returnVal = 0; // if an extraction fails, this number will increase by one
 		std::vector<uint32_t> indices;
-		for (int i = 4; i < argc; i++) {
+		for (int i = 4; i < argc; i++)
+		{
 			uint32_t val = std::stoi(std::string(argv[i]));
-			if (val == 0) {
+			if (val == 0)
+			{
 				std::cout << "Error: Please list indices starting from 1" << std::endl;
 				return errno;
 			}
@@ -184,8 +219,10 @@ int extractArchive(int argc, char** argv, bool verbose) {
 	}
 }
 
-int removeFromArchive(int argc, char** argv, bool verbose) {
-	if (argc < 4) {
+int removeFromArchive(int argc, char **argv, bool verbose)
+{
+	if (argc < 4)
+	{
 		std::cout << "Not enough arguments entered! Required: 2 or more." << std::endl;
 		return errno;
 	}
@@ -196,7 +233,8 @@ int removeFromArchive(int argc, char** argv, bool verbose) {
 	FCT::FctArchive archive(argv[2]);
 
 	std::vector<uint32_t> indices;
-	for (int i = 3; i < argc; i++) {
+	for (int i = 3; i < argc; i++)
+	{
 		indices.push_back(std::stoi(std::string(argv[i])));
 		if (verbose)
 			std::cout << FCT::printFileVerbose(archive.getFileIndex()[indices.back()]) << std::endl;
@@ -204,17 +242,19 @@ int removeFromArchive(int argc, char** argv, bool verbose) {
 			std::cout << archive.getFileIndex()[indices.back()] << std::endl;
 	}
 
-
 	return archive.removeFiles(indices);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
 	std::string programName = std::filesystem::path(argv[0]).filename().string();
 	int retVal = 0;
 
-	if (argc > 1) {		// TODO: Better error handling
+	if (argc > 1)
+	{ // TODO: Better error handling
 		bool verbose = (argv[1][1] == 'v') ? true : false;
-		switch (argv[1][0]) {
+		switch (argv[1][0])
+		{
 		case 'a':
 			retVal = appendArchive(argc, argv, verbose);
 			break;
@@ -246,7 +286,8 @@ int main(int argc, char** argv) {
 			break;
 		}
 	}
-	else {
+	else
+	{
 		std::cout << "Missing mode selector! Run " << programName << " h to display help." << std::endl;
 		std::cout << "Press Enter to exit..." << std::endl;
 		std::cin.get();
