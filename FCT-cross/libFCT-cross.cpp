@@ -290,7 +290,10 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Missing mode selector! Run " << programName << " h to display help." << std::endl;
 		std::cout << "Press Enter to exit..." << std::endl;
+// I'll just boldly assume that Windows users sometimes are not clever enough to notice that this is a console program
+#if defined _WIN32
 		std::cin.get();
+#endif
 	}
 	return retVal;
 }
