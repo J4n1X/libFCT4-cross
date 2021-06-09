@@ -264,9 +264,6 @@ int main(int argc, char **argv) {
             case 'r':
                 retVal = removeFromArchive(argc, argv, verbose);
                 break;
-            case 's':
-                retVal = sortArchive(argc, argv, verbose);
-                break;
             case 'h':
             case '?':
                 std::cout << "FCT File Container is an archival software used "
