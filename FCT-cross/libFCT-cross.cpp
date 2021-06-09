@@ -147,7 +147,9 @@ int appendArchive(int argc, char **argv, bool verbose) {
                 std::cout << it << std::endl;
         retVal += archive.addFile(it);
     }
-    std::cout << "File count: " << archive.getFileIndex().size() << std::e
+    std::cout << "File count: " << archive.getFileIndex().size() << std::endl;
+    std::cout << "Sorting..." << std::endl;
+    archive.sortFiles(verbose);
 
     return retVal;
 }
@@ -239,6 +241,18 @@ int removeFromArchive(int argc, char **argv, bool verbose) {
     return archive.removeFiles(indices, verbose);
 }
 
+int sortArchive(int argc, char **argv, bool verbose) {
+    if (argc < 3) {
+        std::cout << "Not enough arguments entered! Required: 1" << std::endl;
+        return errno;
+    }
+    std::cout << "Sort Mode" << std::endl;
+    std::cout << "---------" << std::endl;
+    FCT::FctArchive archive(argv[2]);
+
+    return archive.sortFiles(verbose, true);
+}
+
 int main(int argc, char **argv) {
     std::string programName =
         std::filesystem::path(argv[0]).filename().string();
@@ -291,6 +305,8 @@ int main(int argc, char **argv) {
                 std::cout << "l - List archive contents Usage: " << programName
                           << " l <path to archive> <file indices (if none, all "
                              "is shown)>"
+                          << "s - Sort the archive files. Usage: "
+                          << programName << "s <path to archive>" << std::endl;
                 std::cout
                     << "v - Can be added to all file modes for verbose output"
                     << std::endl;

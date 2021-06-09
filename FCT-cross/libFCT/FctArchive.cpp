@@ -147,6 +147,64 @@ int FctArchive::removeFiles(std::vector<uint32_t> indices, bool verbose) {
     return 0;
 }
 
+int FctArchive::sortFiles(bool verbose, bool output) {
+    std::vector<FileParser> sortedIndex = FileIndex;
+    std::sort(
+        sortedIndex.begin(), sortedIndex.end(), FCT::FileSort);
+
+    FILE *tmpFile;
+    char *buffer = new char[ChunkSize];
+    std::filesystem::path tmpPath =
+        std::filesystem::path(ArchivePath.generic_string() + ".tmp");
+    FCT::FS::fileOpen(&tmpFile, tmpPath.string().c_str(), "wb+");
+    if (tmpFile == NULL) return errno;
+
+    rewind(ArchiveFile);
+
+    char *headerBuffer = new char[5];
+    fread(headerBuffer, 1, ArchiveHeaderSize, ArchiveFile);
+    fwrite(headerBuffer, 1, ArchiveHeaderSize, tmpFile);
+    delete[] headerBuffer;
+
+    FileParser file;
+    for (uint32_t i = 0; i < sortedIndex.size(); i++) {
+        fseek(ArchiveFile, ArchiveHeaderSize, SEEK_SET);
+        for (uint32_t j = 0; FileIndex.size(); j++) {
+            if (FileIndex[j] != sortedIndex[i]) {
+                seekFile(FileIndex[j]);
+            } else {
+                file = FileIndex[j];
+                break;
+            }
+        }
+
+        if (output)
+            if (verbose)
+                std::cout << FCT::printFileVerbose(file) << std::endl;
+            else
+                std::cout << file << std::endl;
+
+        fwrite(file.Header.data(), 1, file.Header.size(),
+               tmpFile);  // no need to read the header from the file
+        fseek(ArchiveFile, file.Header.size(), SEEK_CUR);
+        for (uint32_t j = 0; j < (file.ChunkCount); j++) {
+            fread(buffer, 1, ChunkSize, ArchiveFile);
+            fwrite(buffer, 1, ChunkSize, tmpFile);
+        }
+    }
+    delete[] buffer;
+    FileIndexStale = true;
+    fclose(tmpFile);
+    fclose(ArchiveFile);
+
+    std::filesystem::remove(ArchivePath);
+    std::filesystem::rename(std::filesystem::path(tmpPath),
+                            std::filesystem::path(ArchivePath));
+    FCT::FS::fileOpen(&ArchiveFile, ArchivePath.string().c_str(), "rb+");
+    if (ArchiveFile == NULL) return errno;
+    return 0;
+}
+
 int FctArchive::extractFiles(std::string outputPath,
                              std::vector<uint32_t> indices, bool verbose) {
     fseek(ArchiveFile, ArchiveHeaderSize, SEEK_SET);

@@ -15,6 +15,22 @@ constexpr char PathDelimiter = '/';
 constexpr int MaxChunkSize = 65535;
 constexpr int ArchiveHeaderSize = 5;
 
+const auto FileSort = [](FCT::FileParser &lhs, FCT::FileParser &rhs) {
+            size_t lhsSlash = lhs.FormattedFilePath.find_last_of('/');
+            size_t rhsSlash = rhs.FormattedFilePath.find_last_of('/');
+            lhsSlash = lhsSlash == -1 ? 0 : lhsSlash;
+            rhsSlash = rhsSlash == -1 ? 0 : rhsSlash;
+
+            std::string lhsDir = lhs.FormattedFilePath.substr(0, lhsSlash);
+            std::string rhsDir = rhs.FormattedFilePath.substr(0, rhsSlash);
+            std::string lhsFile = lhs.FormattedFilePath.substr(lhsSlash);
+            std::string rhsFile = rhs.FormattedFilePath.substr(rhsSlash);
+            if (lhsDir == rhsDir) {
+                return lhsFile < rhsFile;
+            }
+            return lhsDir < rhsDir;
+        };
+
 class FctArchive {
    private:
     uint16_t ChunkSize;
@@ -36,6 +52,7 @@ class FctArchive {
 
     int addFile(FileParser file);
     int removeFiles(std::vector<uint32_t> indices, bool verbose);
+    int sortFiles(bool verbose, bool output = false);
 
     int extractFiles(std::string outputPath, std::vector<uint32_t> indices,
                      bool verbose);
