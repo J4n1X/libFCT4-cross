@@ -23,6 +23,7 @@ namespace FCT {
 	}
 
 	// parse from file
+	// TODO: I'll probably have to rewrite this
 	FileParser::FileParser(std::filesystem::path filePath, std::filesystem::path rootDir, uint16_t chunkSize) {
 		// TODO: FILE NAME FORMATTING, WE JUST INSERT THE PATH FOR NOW
 		RawFilePath = filePath;
@@ -60,7 +61,7 @@ namespace FCT {
 		pushUint32(&Header, ChunkCount);
 		pushUint16(&Header, LastChunkContentSize);
 		pushUint16(&Header, filePathLength);
-		Header.insert(Header.end(), (uint8_t*)FormattedFilePath.c_str(), (uint8_t*)(FormattedFilePath.c_str() + FormattedFilePath.length()));
+		Header.insert(Header.end(), (uint8_t*)FormattedFilePath.c_str(), (uint8_t*)(FormattedFilePath.c_str() + FormattedFilePath.size()));
 		/*for (int i = 0; i < filePathLength; i++)
 			Header.push_back(fileNameCharArray[i]);*/
 	}
@@ -80,7 +81,7 @@ namespace FCT {
 			throw "Failed to parse from header data";
 		}
 
-		FileSize = ((uint64_t)ChunkCount) * ((uint64_t)chunkSize) + ((uint64_t)LastChunkContentSize);
+		FileSize = ((uint64_t)ChunkCount - 1) * ((uint64_t)chunkSize) + ((uint64_t)LastChunkContentSize);
 
 		char* filePath = new char[(uint64_t)filePathLength + 1];
 		filePath[filePathLength] = 0;
@@ -91,18 +92,41 @@ namespace FCT {
 		Header.insert(Header.end(), (uint8_t*)&ChunkCount, (uint8_t*)&ChunkCount + 4);
 		Header.insert(Header.end(), (uint8_t*)&LastChunkContentSize, (uint8_t*)&LastChunkContentSize + 2);
 		Header.insert(Header.end(), (uint8_t*)&filePathLength, (uint8_t*)&filePathLength + 2);
-		Header.insert(Header.end(), (uint8_t*)FormattedFilePath.c_str(), (uint8_t*)FormattedFilePath.c_str() + FormattedFilePath.length());
+		Header.insert(Header.end(), (uint8_t*)FormattedFilePath.c_str(), (uint8_t*)FormattedFilePath.c_str() + FormattedFilePath.size());
 	}
 
 	FileParser::~FileParser() {
 	}
 #pragma endregion 
 
-
 	std::ostream& operator<<(std::ostream& os, const FileParser& file) {
 		os << file.FormattedFilePath << " " << file.FileSize;
 		return os;
 	}
+
+	bool FileParser::operator<(const FileParser& file){
+		return this->FormattedFilePath < file.FormattedFilePath;
+	}
+
+	bool FileParser::operator>(const FileParser& file){
+		return !(*this < file);
+	}
+
+	// leaving out filesize comparison, it's not important as the chunks define size
+	bool FileParser::operator==(const FileParser& file){
+		return (
+			ChunkCount == file.ChunkCount &&
+			LastChunkContentSize == LastChunkContentSize &&
+			FormattedFilePath == file.FormattedFilePath 
+		);
+	}
+
+	bool FileParser::operator!=(const FileParser& file){
+		return !(*this == file);
+	}
+
+	// END CLASS
+
 	std::string printFileVerbose(FileParser file){
 		return "Filename: " + file.FormattedFilePath + '\n'
 			+  "Filesize: " + std::to_string(file.FileSize) + '\n'

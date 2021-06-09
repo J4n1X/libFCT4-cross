@@ -32,7 +32,13 @@ namespace FCT {
 		FileParser(FILE* archiveFile, uint16_t chunkSize);
 		~FileParser();
 
-		friend std::ostream& operator<<(std::ostream& os, const FileParser &file); // we want to define this in the cpp file
+		
+		bool operator<(const FileParser &file);
+		bool operator>(const FileParser &file);
+		bool operator==(const FileParser &file);
+		bool operator!=(const FileParser &file);
+		
+		friend std::ostream& operator<<(std::ostream& os, const FileParser &file);
 	};
 	std::string printFileVerbose(FileParser file);
 }

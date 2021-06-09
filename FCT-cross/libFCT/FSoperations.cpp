@@ -39,19 +39,21 @@ namespace FCT {
 		// gets files recursively through directories
 		std::vector<std::filesystem::path> expandDirectory(std::filesystem::path folderPath)
 		{
-			std::vector<std::filesystem::path> stringVector;
+			std::vector<std::filesystem::path> pathVector;
 			for (std::filesystem::recursive_directory_iterator i(folderPath), end; i != end; ++i) {
-				if (std::filesystem::is_regular_file(i->path())) {
-					stringVector.push_back(i->path());
+				std::filesystem::path absPath = std::filesystem::absolute(i->path());
+				if (std::filesystem::is_regular_file(absPath)) {
+					pathVector.push_back(absPath);
 				}
 			}
-			return stringVector;
+			return pathVector;
 		}
 
 		// Remove everything behind the rootdir
 		std::string FormatPath(std::filesystem::path rootDir, std::filesystem::path filePath) {
-			uint64_t wordStartPos = filePath.generic_string().find(rootDir.generic_string());
-			return std::filesystem::path(filePath).generic_string().erase(0,wordStartPos);
+			return std::filesystem::relative(filePath, rootDir).generic_string();
+			/*uint64_t wordStartPos = filePath.generic_string().find(rootDir.generic_string());
+			return std::filesystem::path(filePath).generic_string().erase(0,wordStartPos);*/
 		}
 	}
 }
