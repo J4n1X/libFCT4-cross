@@ -147,7 +147,7 @@ int appendArchive(int argc, char **argv, bool verbose) {
                 std::cout << it << std::endl;
         retVal += archive.addFile(it);
     }
-    std::cout << "File count: " << archive.getFileIndex().size() << std::e
+    std::cout << "File count: " << archive.getFileIndex().size() << std::endl;
 
     return retVal;
 }
@@ -287,7 +287,7 @@ int main(int argc, char **argv) {
                           << std::endl;
                 std::cout << "l - List archive contents Usage: " << programName
                           << " l <path to archive> <file indices (if none, all "
-                             "is shown)>"
+                             "is shown)>" << std::endl;
                 std::cout
                     << "v - Can be added to all file modes for verbose output"
                     << std::endl;
