@@ -271,7 +271,7 @@ int main(int argc, char **argv) {
                           << std::endl;
                 std::cout << "Modes:" << std::endl;
                 std::cout << "a - Append to archive. Usage: " << programName
-                          << " a(v)(s) <path to archive> <paths to files or "
+                          << " a(v) <path to archive> <paths to files or "
                              "directories>"
                           << std::endl;
                 std::cout << "c - Create archive. Usage: " << programName
