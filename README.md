@@ -26,6 +26,7 @@ The format will be as follows:
  - LastChunkContentSize (2 bytes)
  - FilePathSize (2 bytes)
  - FormattedFilePath (up to 65526 bytes)
+If a chunk does not fit inside chunks without a remainder, then that incomplete chunk is not added to the ChunkCount total and will instead be identified by a non-zero remainder.
  
  ## Compilation and usage
  This program was written in Visual Studio 2019 using the CMake feature. 
