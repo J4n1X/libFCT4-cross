@@ -29,7 +29,6 @@ namespace FCT {
 		RawFilePath = filePath;
 		FormattedFilePath = FCT::FS::FormatPath(rootDir, filePath);
 
-		// get file size (TODO: multi-platform)
 #if defined _WIN32
 		struct __stat64 stat_buf;
 		if (_stat64(filePath.string().c_str(), &stat_buf) != 0)
@@ -47,7 +46,6 @@ namespace FCT {
 
 			// add one more chunk if we have a remainder
 			LastChunkContentSize = FileSize % chunkSize;
-			ChunkCount += (LastChunkContentSize != 0 ? 1 : 0);
 			if (ChunkCount >= UINT32_MAX)
 				throw "Chunk count too high. Try increasing chunk size";
 		}
@@ -81,7 +79,7 @@ namespace FCT {
 			throw "Failed to parse from header data";
 		}
 
-		FileSize = ((uint64_t)ChunkCount - 1) * ((uint64_t)chunkSize) + ((uint64_t)LastChunkContentSize);
+		FileSize = ((uint64_t)ChunkCount) * ((uint64_t)chunkSize) + ((uint64_t)LastChunkContentSize);
 
 		char* filePath = new char[(uint64_t)filePathLength + 1];
 		filePath[filePathLength] = 0;
