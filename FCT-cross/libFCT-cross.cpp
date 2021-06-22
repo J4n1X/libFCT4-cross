@@ -304,8 +304,8 @@ int main(int argc, char **argv) {
                           << std::endl;
                 std::cout << "l - List archive contents Usage: " << programName
                           << " l <path to archive> <file indices (if none, all "
-                             "is shown)>"
-                          << "s - Sort the archive files. Usage: "
+                             "is shown)>" << std::endl;
+                std::cout << "s - Sort the archive files. Usage: "
                           << programName << "s <path to archive>" << std::endl;
                 std::cout
                     << "v - Can be added to all file modes for verbose output"
