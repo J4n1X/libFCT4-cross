@@ -116,8 +116,10 @@ namespace FCT
                 fread(buffer, 1, ChunkSize, ArchiveFile);
                 fwrite(buffer, 1, ChunkSize, filePtr);
             }
-            fread(buffer, 1, ChunkSize, ArchiveFile);
-            fwrite(buffer, 1, file.LastChunkContentSize, filePtr);
+            if(file.LastChunkContentSize){
+                fread(buffer, 1, ChunkSize, ArchiveFile);
+                fwrite(buffer, 1, file.LastChunkContentSize, filePtr);
+            }
         }
         delete[] buffer;
     }
