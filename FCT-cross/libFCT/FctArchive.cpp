@@ -109,7 +109,7 @@ namespace FCT
         char *buffer = new char[ChunkSize];
 
         seekFileHeader(file);
-        if (file.ChunkCount > 0)
+        if (file.ChunkCount >= 0)
         {
             for (uint32_t i = 0; i < file.ChunkCount; i++)
             {

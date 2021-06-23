@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8)
 
-add_library(FCT "libFCT.h" "FctArchive.cpp" "FctArchive.h" "FSoperations.cpp" "FSoperations.h" "FileParser.cpp" "FileParser.h")
+add_library(FCT STATIC "libFCT.h" "FctArchive.cpp" "FctArchive.h" "FSoperations.cpp" "FSoperations.h" "FileParser.cpp" "FileParser.h")
 
 # test that filesystem header actually is there and works
 try_compile(HAS_FS "${CMAKE_BINARY_DIR}/temp" 
